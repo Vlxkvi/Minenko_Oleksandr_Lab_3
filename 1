@@ -1,0 +1,127 @@
+using System;
+
+namespace _2._3
+{
+    //Створити об'єкт класу Простий дріб, використовуючи клас Число, Знак. Методи:
+    //висновок на екран, додавання, віднімання, множення, ділення.
+
+    public class number
+    {
+        public short top;
+        public short bottom;
+        public char s;
+    }
+    public class fraction : number
+    {
+        public void display(short top, short bottom)
+        {
+            Console.WriteLine($"\nДріб - {top}/{bottom}\n");
+        }
+        public void add(short ft, short fb, short k, short l)
+        {
+            ft = (short)(ft * l + fb * k);
+            fb = (short)(fb * l);
+            Console.WriteLine($"\nДріб після додавання - {ft}/{fb}\n");
+            top = ft;
+            bottom = fb;
+        }
+        public void subtract(short ft, short fb, short k, short l)
+        {
+            ft = (short)(ft * l - fb * k);
+            fb = (short)(fb * l);
+            Console.WriteLine($"\nДріб після віднімання - {ft}/{fb}\n");
+            top = ft;
+            bottom = fb;
+        }
+        public void multiply(short ft, short fb, short k, short l)
+        {
+            ft = (short)(ft * k);
+            fb = (short)(fb * l);
+            Console.WriteLine($"\nДріб після множення - {ft}/{fb}\n");
+            top = ft;
+            bottom = fb;
+        }
+        public void divide(short ft, short fb, short k, short l)
+        {
+            ft = (short)(ft * l);
+            fb = (short)(fb * k);
+            Console.WriteLine($"\nДріб після ділення - {ft}/{fb}\n");
+            top = ft;
+            bottom = fb;
+        }
+        public override bool Equals(object? obj)
+        {
+            if ((obj == null) || !GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                fraction f = (fraction)obj;
+                return (bottom == f.bottom) && (top == f.top);
+            }
+        }
+        public override int GetHashCode()
+        {
+            return s * top;
+        }
+        public override string ToString()
+        {
+            return $" Чисельник - {top} , а знаменник {bottom}.";
+        }
+        class Program
+    {
+        static void Main(string[] args)
+        {
+            fraction f = new fraction();
+            try
+            {
+                Console.WriteLine("Введіть знаменник дробу:");
+                f.top = short.Parse(Console.ReadLine());
+                Console.WriteLine("Введіть чисельник дробу:");
+                f.bottom = short.Parse(Console.ReadLine());
+                f.s = char.Parse("/");
+
+                // Вивід
+                f.display(f.top, f.bottom);
+
+                Console.WriteLine("Введiть знаменник дробу, який буде додано до дробу у виглядi n/m");
+                short k = short.Parse(Console.ReadLine());
+                Console.WriteLine("Введiть чисельник дробу, який буде додано до дробу у виглядi n/m");
+                short l = short.Parse(Console.ReadLine());
+
+                // Додавання
+                f.add(f.top, f.bottom, k, l);
+
+                Console.WriteLine("Введiть знаменник дробу, який буде віднято від початкового дробу");
+                k = short.Parse(Console.ReadLine());
+                Console.WriteLine("Введiть чисельник дробу, який буде віднято від початкового дробу");
+                l = short.Parse(Console.ReadLine());
+
+                // Віднімання
+                f.subtract(f.top, f.bottom, k, l);
+
+                Console.WriteLine("Введiть знаменник дробу, на який буде помножено початковий дріб");
+                k = short.Parse(Console.ReadLine());
+                Console.WriteLine("Введiть чисельник дробу, на який буде помножено початковий дріб");
+                l = short.Parse(Console.ReadLine());
+
+                // Множення
+                f.multiply(f.top, f.bottom, k, l);
+
+                Console.WriteLine("Введiть знаменник дробу, на який буде поділено початковий дріб");
+                k = short.Parse(Console.ReadLine());
+                Console.WriteLine("Введiть чисельник дробу, на який буде поділено початковий дріб");
+                l = short.Parse(Console.ReadLine());
+
+                // Ділення
+                f.divide(f.top, f.bottom, k, l);
+            }
+            catch(Exception)
+            {
+                Console.WriteLine("Невірно введено.");
+            }
+        }
+    }
+    }
+}
