@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+
+namespace _2._3._2
+{
+    //Фургон кави. Завантажити фургон певного обсягу вантажем на певну суму з різних сортів кави,
+    //що знаходяться, до того ж, в різних фізичних станах (зерно, мелену, розчинну в банках і пакетиках).
+    //Враховувати обсяг кави разом з упаковкою. Провести сортування товарів на основі співвідношення ціни і ваги.
+    //Знайти в фургоні товар, відповідний заданому діапазону параметрів якості.
+
+    public class coffee
+    {
+        public string name;
+        public string phcond;
+        public double weight;
+        public double price;
+        public void SetName(string a)
+        {
+            name = a;
+        }
+        public void SetPhCond(string a)
+        {
+            phcond = a;
+        }
+        public void SetWeight(short a)
+        {
+            weight = a;
+        }
+        public void SetPrice(short a)
+        {
+            price = a;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<coffee> catalogue = JsonConvert.DeserializeObject<List<coffee>>(File.ReadAllText(@"C:\Casual\jsons\3_1.json"));
+            Console.WriteLine("Список кави в фургонi до сортування:\n");
+            foreach (coffee a in catalogue)
+            {
+                Console.WriteLine($"  {a.name}\t\t\t\t{a.price}\t{a.weight}\t{a.price/a.weight}");
+            }
+            catalogue.Sort(delegate (coffee x, coffee y)
+            {
+                if (x.weight == 0 || y.weight == 0) return 0;
+                else if (x.price / x.weight < y.price / y.weight) return -1;
+                else return 1;
+            });
+            Console.WriteLine("\nСписок кави в фургонi пiсля сортування:\n");
+            foreach ( coffee a in catalogue )
+            {
+                Console.WriteLine($"  {a.name}\t\t\t\t{a.price / a.weight}");
+            }
+            Console.WriteLine("\nВведiть нижню межу дiапазону:");
+            double min = double.Parse(Console.ReadLine());
+            Console.WriteLine("\nВведiть верхню межу дiапазону:");
+            double max = double.Parse(Console.ReadLine());
+            if (min > max) 
+            { 
+                Console.WriteLine("Нижня межа не може бути більшою за верхню.");
+                System.Environment.Exit(1);
+            }
+            Console.WriteLine("\nСписок товару у фургонi, вiдповiдний заданому дiапазону параметрiв якостi:\n");
+            foreach(coffee a in catalogue)
+            {
+                if (a.price / a.weight >= min && a.price/a.weight <= max)
+                {
+                    Console.Write($"  {a.name}\t\t\t\t{a.price / a.weight}\n");
+                }
+            }
+        }
+    }
+}
